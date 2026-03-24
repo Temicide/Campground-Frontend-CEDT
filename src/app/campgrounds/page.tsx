@@ -18,42 +18,48 @@ const DUMMY_CAMPGROUNDS: Campground[] = [
     name: "Pine Ridge Campground",
     address: "123 Forest Rd, Chiang Mai 50000",
     telephone: "053-123-456",
-    description: "Nestled among towering pines with stunning mountain views and fresh air.",
+    description:
+      "Nestled among towering pines with stunning mountain views and fresh air.",
   },
   {
     _id: "2",
     name: "Riverside Haven",
     address: "88 River Lane, Kanchanaburi 71000",
     telephone: "034-567-890",
-    description: "Wake up to the sound of the river — perfect for kayaking and fishing.",
+    description:
+      "Wake up to the sound of the river — perfect for kayaking and fishing.",
   },
   {
     _id: "3",
     name: "Sunset Valley Camp",
     address: "45 Valley Rd, Pai 58130",
     telephone: "053-987-654",
-    description: "Golden sunsets and starry nights in the heart of Mae Hong Son.",
+    description:
+      "Golden sunsets and starry nights in the heart of Mae Hong Son.",
   },
   {
     _id: "4",
     name: "Lakeside Retreat",
     address: "10 Lakefront Dr, Khao Yai 30130",
     telephone: "044-111-222",
-    description: "Peaceful lakeside setting inside a national park — wildlife all around.",
+    description:
+      "Peaceful lakeside setting inside a national park — wildlife all around.",
   },
   {
     _id: "5",
     name: "Summit Base Camp",
     address: "99 Peak Trail, Doi Inthanon 50180",
     telephone: "053-456-789",
-    description: "Base camp for hikers — high altitude, cool breezes, breathtaking views.",
+    description:
+      "Base camp for hikers — high altitude, cool breezes, breathtaking views.",
   },
   {
     _id: "6",
     name: "Beach Palms Camp",
     address: "77 Coastal Path, Krabi 81000",
     telephone: "075-321-654",
-    description: "Fall asleep to ocean waves under swaying palms on the Andaman coast.",
+    description:
+      "Fall asleep to ocean waves under swaying palms on the Andaman coast.",
   },
 ];
 
@@ -65,8 +71,14 @@ export default function CampgroundsPage() {
 
   useEffect(() => {
     getCampgrounds()
-      .then((d) => setCampgrounds(d.data || []))
-      .catch(() => setCampgrounds(DUMMY_CAMPGROUNDS))
+      .then((d) => {
+        console.log("[getCampgrounds] response:", d);
+        setCampgrounds(d.data || []);
+      })
+      .catch((err) => {
+        console.error("[getCampgrounds] failed:", err);
+        setCampgrounds(DUMMY_CAMPGROUNDS);
+      })
       .finally(() => setFetching(false));
   }, []);
 
@@ -104,15 +116,15 @@ export default function CampgroundsPage() {
                   <span>📞</span>
                   {camp.telephone}
                 </p>
-                {camp.description && (
-                  <p>{camp.description}</p>
-                )}
+                {camp.description && <p>{camp.description}</p>}
                 <button
                   onClick={() => {
                     if (!user) {
                       router.push("/login");
                     } else {
-                      router.push(`/bookings/new?campgroundId=${camp._id}&campgroundName=${encodeURIComponent(camp.name)}`);
+                      router.push(
+                        `/bookings/new?campgroundId=${camp._id}&campgroundName=${encodeURIComponent(camp.name)}`,
+                      );
                     }
                   }}
                 >

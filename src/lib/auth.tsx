@@ -1,6 +1,6 @@
 "use client";
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { getMe, logout as apiLogout } from "./api";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { logout as apiLogout } from "./api";
 
 interface User {
   _id: string;
@@ -18,21 +18,13 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: true,
+  loading: false,
   setUser: () => {},
   logout: async () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getMe()
-      .then((d) => setUser(d.data))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
-  }, []);
 
   const logout = async () => {
     await apiLogout();
@@ -40,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, setUser, logout }}>
+    <AuthContext.Provider value={{ user, loading: false, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
