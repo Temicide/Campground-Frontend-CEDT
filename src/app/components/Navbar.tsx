@@ -13,32 +13,56 @@ export default function Navbar() {
   };
 
   return (
-    <nav>
-      <div>
-        <Link href="/campgrounds">
+    <nav className="bg-white border-b border-gray-200 shadow-sm">
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link href="/campgrounds" className="text-xl font-bold text-green-700 tracking-tight">
           ⛺ CampBook
         </Link>
 
-        <div>
+        <div className="flex items-center gap-4">
           {!user ? (
             <>
-              <Link href="/login">Login</Link>
-              <Link href="/register">Register</Link>
+              <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900 font-medium">
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="text-sm bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-medium"
+              >
+                Register
+              </Link>
             </>
           ) : (
             <>
-              <span>
-                Hi, <span>{user.name}</span>
+              <span className="text-sm text-gray-500">
+                Hi, <span className="font-semibold text-gray-800">{user.name}</span>
                 {user.role === "admin" && (
-                  <span>Admin</span>
+                  <span className="ml-1 text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-medium">
+                    Admin
+                  </span>
                 )}
               </span>
               {user.role === "admin" ? (
-                <Link href="/admin/bookings">All Bookings</Link>
+                <Link
+                  href="/admin/bookings"
+                  className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+                >
+                  All Bookings
+                </Link>
               ) : (
-                <Link href="/bookings">My Bookings</Link>
+                <Link
+                  href="/bookings"
+                  className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+                >
+                  My Bookings
+                </Link>
               )}
-              <button onClick={handleLogout}>Logout</button>
+              <button
+                onClick={handleLogout}
+                className="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 font-medium"
+              >
+                Logout
+              </button>
             </>
           )}
         </div>
