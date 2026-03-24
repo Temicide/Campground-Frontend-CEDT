@@ -84,39 +84,44 @@ export default function CampgroundsPage() {
 
   if (loading || fetching) {
     return (
-      <div>
-        <p>Loading campgrounds...</p>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-gray-400 text-sm animate-pulse">Loading campgrounds...</div>
       </div>
     );
   }
 
   return (
     <div>
-      <div>
-        <h1>Campgrounds</h1>
-        <p>Find your perfect outdoor escape</p>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Campgrounds</h1>
+        <p className="text-gray-500 mt-1">Find your perfect outdoor escape</p>
       </div>
 
       {campgrounds.length === 0 ? (
-        <p>No campgrounds available.</p>
+        <p className="text-gray-500 text-center py-16">No campgrounds available.</p>
       ) : (
-        <div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {campgrounds.map((camp) => (
-            <div key={camp._id}>
-              <div>
-                <span>🏕️</span>
+            <div
+              key={camp._id}
+              className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+            >
+              <div className="bg-gradient-to-br from-green-50 to-emerald-100 h-36 flex items-center justify-center">
+                <span className="text-5xl">🏕️</span>
               </div>
-              <div>
-                <h2>{camp.name}</h2>
-                <p>
-                  <span>📍</span>
+              <div className="p-5">
+                <h2 className="text-lg font-bold text-gray-900">{camp.name}</h2>
+                <p className="text-sm text-gray-500 mt-1 flex items-start gap-1">
+                  <span className="mt-0.5">📍</span>
                   {camp.address}
                 </p>
-                <p>
+                <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
                   <span>📞</span>
                   {camp.telephone}
                 </p>
-                {camp.description && <p>{camp.description}</p>}
+                {camp.description && (
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-2">{camp.description}</p>
+                )}
                 <button
                   onClick={() => {
                     if (!user) {
@@ -127,6 +132,7 @@ export default function CampgroundsPage() {
                       );
                     }
                   }}
+                  className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2 rounded-lg transition-colors"
                 >
                   Book Now
                 </button>
