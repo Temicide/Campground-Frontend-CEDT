@@ -81,7 +81,7 @@ export default function EditBookingPage() {
             ← Back
           </button>
           <h1 className="text-2xl font-bold text-gray-900">Edit Booking</h1>
-          <p className="text-sm text-gray-500">Update your reservation details</p>
+          <p className="text-sm text-gray-500 mt-1">Update your reservation details</p>
         </div>
 
         {error && (
@@ -108,7 +108,7 @@ export default function EditBookingPage() {
                 min={today}
                 value={checkInDate}
                 onChange={(e) => setCheckInDate(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function EditBookingPage() {
                 max={3}
                 value={nights}
                 onChange={(e) => setNights(Number(e.target.value))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               <p className="text-xs text-amber-600 mt-1">⚠️ Maximum stay is 3 nights per booking</p>
             </div>
@@ -132,7 +132,7 @@ export default function EditBookingPage() {
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-2.5 rounded-lg transition-colors"
+              className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white font-semibold py-2.5 rounded-lg transition-colors"
             >
               {saving ? "Saving..." : "Save Changes"}
             </button>
