@@ -48,52 +48,69 @@ export default function MyBookingsPage() {
 
   if (loading) {
     return (
-      <div>
-        <p>Loading your bookings...</p>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <p className="text-gray-400 text-sm animate-pulse">Loading your bookings...</p>
       </div>
     );
   }
 
   return (
     <div>
-      <div>
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1>My Bookings</h1>
-          <p>Manage your upcoming trips</p>
+          <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
+          <p className="text-gray-500 mt-1">Manage your upcoming trips</p>
         </div>
-        <Link href="/campgrounds">+ New Booking</Link>
+        <Link
+          href="/campgrounds"
+          className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        >
+          + New Booking
+        </Link>
       </div>
 
       {bookings.length === 0 ? (
-        <div>
-          <span>🏕️</span>
-          <p>No bookings yet.</p>
-          <Link href="/campgrounds">Browse campgrounds →</Link>
+        <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
+          <span className="text-5xl">🏕️</span>
+          <p className="text-gray-500 mt-4">No bookings yet.</p>
+          <Link href="/campgrounds" className="text-green-600 hover:underline text-sm mt-2 inline-block">
+            Browse campgrounds →
+          </Link>
         </div>
       ) : (
-        <div>
-          <table>
-            <thead>
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th>Campground</th>
-                <th>Check-in Date</th>
-                <th>Nights</th>
-                <th>Actions</th>
+                <th className="text-left px-6 py-3 font-semibold text-gray-600">Campground</th>
+                <th className="text-left px-6 py-3 font-semibold text-gray-600">Check-in Date</th>
+                <th className="text-left px-6 py-3 font-semibold text-gray-600">Nights</th>
+                <th className="text-right px-6 py-3 font-semibold text-gray-600">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-100">
               {bookings.map((b) => (
-                <tr key={b._id}>
-                  <td>{b.campground?.name}</td>
-                  <td>
+                <tr key={b._id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 font-medium text-gray-900">{b.campground?.name}</td>
+                  <td className="px-6 py-4 text-gray-600">
                     {new Date(b.checkInDate).toLocaleDateString("en-GB", {
                       day: "2-digit", month: "short", year: "numeric",
                     })}
                   </td>
-                  <td>{b.nights} night{b.nights > 1 ? "s" : ""}</td>
-                  <td>
-                    <Link href={`/bookings/${b._id}/edit`}>Edit</Link>
-                    <button onClick={() => setDeleteId(b._id)}>Delete</button>
+                  <td className="px-6 py-4 text-gray-600">{b.nights} night{b.nights > 1 ? "s" : ""}</td>
+                  <td className="px-6 py-4 text-right space-x-2">
+                    <Link
+                      href={`/bookings/${b._id}/edit`}
+                      className="inline-block text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => setDeleteId(b._id)}
+                      className="text-xs bg-red-50 text-red-700 hover:bg-red-100 font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -104,18 +121,28 @@ export default function MyBookingsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteId && (
-        <div>
-          <div>
-            <div>
-              <span>🗑️</span>
-              <h2>Delete Booking?</h2>
-              <p>Are you sure you want to delete this booking? This action cannot be undone.</p>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4">
+            <div className="text-center">
+              <span className="text-4xl">🗑️</span>
+              <h2 className="text-lg font-bold text-gray-900 mt-3">Delete Booking?</h2>
+              <p className="text-sm text-gray-500 mt-2">
+                Are you sure you want to delete this booking? This action cannot be undone.
+              </p>
             </div>
-            <div>
-              <button onClick={() => setDeleteId(null)} disabled={deleting}>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setDeleteId(null)}
+                disabled={deleting}
+                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-lg transition-colors"
+              >
                 Cancel
               </button>
-              <button onClick={confirmDelete} disabled={deleting}>
+              <button
+                onClick={confirmDelete}
+                disabled={deleting}
+                className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-semibold py-2 rounded-lg transition-colors"
+              >
                 {deleting ? "Deleting..." : "Yes, Delete"}
               </button>
             </div>
