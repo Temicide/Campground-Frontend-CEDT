@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api";
+import { login, getMe } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 
 export default function LoginPage() {
@@ -20,8 +20,13 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const data = await login(form);
-      setUser(data.data);
-      if (data.data?.role === "admin") {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+      const meData = await getMe();
+      const userData = meData.user || meData.data;
+      setUser(userData);
+      if (userData?.role === "admin") {
         router.push("/admin/bookings");
       } else {
         router.push("/campgrounds");

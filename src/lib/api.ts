@@ -1,10 +1,18 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
+  const headers: HeadersInit = { "Content-Type": "application/json", ...options.headers };
+  
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
-    credentials: "include",
-    headers: { "Content-Type": "application/json", ...options.headers },
     ...options,
+    headers,
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.message || "Request failed");
@@ -20,7 +28,7 @@ export const login = (body: object) =>
 
 export const logout = () => apiFetch("/auth/logout");
 
-export const getMe = () => apiFetch("/auth/me");
+export const getMe = () => apiFetch("/protected");
 
 // Campgrounds
 export const getCampgrounds = () => apiFetch("/campgrounds");

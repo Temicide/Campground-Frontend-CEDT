@@ -1,6 +1,6 @@
 "use client";
-import { createContext, useContext, useState, ReactNode } from "react";
-import { logout as apiLogout } from "./api";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { logout as apiLogout, getMe } from "./api";
 
 interface User {
   _id: string;
@@ -25,14 +25,36 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("token")) {
+      getMe()
+        .then((res) => setUser(res.user || res.data))
+        .catch(() => {
+          localStorage.removeItem("token");
+          setUser(null);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const logout = async () => {
-    await apiLogout();
+    try {
+      await apiLogout();
+    } catch (err) {
+      console.error("Logout error", err);
+    }
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+    }
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading: false, setUser, logout }}>
+    <AuthContext.Provider value={{ user, loading, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
